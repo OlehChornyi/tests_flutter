@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tests_flutter/books_screen.dart';
 import 'package:tests_flutter/login_screen.dart';
 
 void main() {
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: const BooksScreen(),
     );
   }
 }
