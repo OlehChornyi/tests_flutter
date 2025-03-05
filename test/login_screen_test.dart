@@ -11,7 +11,7 @@ void main() {
     Finder title = find.text("Login");
 
     //Assert
-    expect(title, findsOneWidget);
+    expect(title, findsNWidgets(2));
   });
 
   testWidgets('Should have a text field to collect email id', (
@@ -51,13 +51,40 @@ void main() {
     expect(loginButton, findsOneWidget);
   });
 
-  testWidgets(
-    'Should show required fields text message if fields are empty',
-    (WidgetTester tester) async {
-      //Arrange
+  testWidgets('Should show required fields text message if fields are empty', (
+    WidgetTester tester,
+  ) async {
+    //Arrange
     await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
 
     //Act
-    },
-  );
+    Finder loginButton = find.byType(ElevatedButton);
+    await tester.tap(loginButton);
+    await tester.pumpAndSettle();
+    Finder errorTexts = find.text('Required Field');
+
+    //Assert
+    expect(errorTexts, findsNWidgets(2));
+  });
+
+  testWidgets('Should submit form when user email id and password are valid', (
+    WidgetTester tester,
+  ) async {
+    //Arrange
+    await tester.pumpWidget(const MaterialApp(home: LoginScreen()));
+
+    //Act
+    Finder userNameTextField = find.byKey(const ValueKey('email_id'));
+    Finder passwordTextField = find.byKey(const ValueKey('password'));
+    await tester.enterText(userNameTextField, 'i@i.com');
+    await tester.enterText(passwordTextField, '12345678');
+
+    Finder loginButton = find.byType(ElevatedButton);
+    await tester.tap(loginButton);
+    await tester.pumpAndSettle();
+    Finder errorTexts = find.text('Required Field');
+
+    //Assert
+    expect(errorTexts, findsNothing);
+  });
 }
